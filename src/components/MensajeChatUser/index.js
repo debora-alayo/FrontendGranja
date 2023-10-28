@@ -1,0 +1,1 @@
+export { MessageChatUser } from './MensajeChatUser';

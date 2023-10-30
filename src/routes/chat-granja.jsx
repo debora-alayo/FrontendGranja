@@ -15,7 +15,7 @@ import { MessageChatUser } from '../components/MensajeChatUser';
 import {Alerta} from '../components/Alerta'
 import { Input } from 'react-chat-elements'
 
-import {COMMENTS_SUBSCRIPTION } from '../api/subscriptions' // Define tu consulta de suscripción
+import {AD_SUBSCRIPTION } from '../api/subscriptions' // Define tu consulta de suscripción
 import { Button } from 'react-chat-elements'
 import {
   Alert,
@@ -50,16 +50,16 @@ function App() {
   //if ( error) return <Layout> <Error /> </Layout>;
   //if (loading) return <Layout> <Loading /> </Layout>;
 
-  const [personas, setPersonas] = useState([]);
+  const [publicidades, setPublicidades] = useState([]);
 
   const { loading, error, data } = useSubscription(
-    COMMENTS_SUBSCRIPTION,{
+    AD_SUBSCRIPTION,{
       onData: (subscriptionData ) => {
         if (subscriptionData.data) {
           console.log(subscriptionData);
-          const nuevaPersona = subscriptionData.data.data.nuevaPersona;
-          console.log(nuevaPersona);
-          setPersonas( personas => [...personas, nuevaPersona]);
+          const newAd = subscriptionData.data.data.AdAdded;
+          console.log(newAd);
+          setPublicidades( publicidades => [...publicidades, newAd]);
         }
       }
     }
@@ -171,8 +171,8 @@ function App() {
 
 
 
-{personas.map((persona, index) => (
-                    <Alerta key={index}>{persona}</Alerta>
+                  {publicidades.map((publicidad, index) => (
+                    <Alerta key={index}>{publicidad}</Alerta>
                   ))}
                         </Text>
                       </CardBody>
@@ -198,7 +198,11 @@ function App() {
 
                     <Card>
                     <CardBody>
-                      <Text>Anuncios</Text>
+                      <Text>
+                      {publicidades.map((publicidad, index) => (
+                     key={index}>{publicidad}
+                    ))}
+                      </Text>
                     </CardBody>
                   </Card>
                   

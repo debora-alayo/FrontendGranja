@@ -231,9 +231,7 @@ function App() {
 
                   </div>
 
-                {personas.map((persona, index) => (
-                    <MessageText key={index}>{persona}</MessageText>
-                  ))}
+                
 
                 </Box>
               </GridItem>

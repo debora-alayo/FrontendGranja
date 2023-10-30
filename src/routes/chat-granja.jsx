@@ -12,6 +12,7 @@ import { GET_PLANTS, GET_ADS, GET_CONSTRUCTIONS, GET_FARMS, GET_USERS } from '..
 //import { LIST_TEAMS } from '../api/teams'
 import {MessageText} from '../components/MessageBox/'
 import { MessageChatUser } from '../components/MensajeChatUser';
+import { CardPublicidadUser } from '../components/CardPublicidad';
 import {Alerta} from '../components/Alerta'
 import { Input } from 'react-chat-elements'
 
@@ -197,11 +198,11 @@ function App() {
                     <Card>
                     <CardBody>
                       <Text>
-                        <div>
+                        
                       {publicidades.map((publicidad, index) => (
-                      key={index} > {publicidad}
-                  ))}
-                  </div>
+                       <CardPublicidadUser  key={index} > {publicidad}</CardPublicidadUser>
+                      ))}
+                    
                       </Text>
                     </CardBody>
                   </Card>

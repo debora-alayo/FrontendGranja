@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, CardFooter , Text} from '@chakra-ui/react'
 
 
 

@@ -197,13 +197,11 @@ function App() {
 
                     <Card>
                     <CardBody>
-                      <Text>
-                        
+                                            
                       {publicidades.map((publicidad, index) => (
                        <CardPublicidadUser  key={index} > {publicidad}</CardPublicidadUser>
                       ))}
                     
-                      </Text>
                     </CardBody>
                   </Card>
                   

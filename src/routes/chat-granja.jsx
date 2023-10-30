@@ -2,9 +2,9 @@ import React, {useState , useRef} from 'react';
 import { useQuery,  useApolloClient } from '@apollo/client'
 import { useSubscription } from '@apollo/client'
 
-import { Heading } from '@chakra-ui/react'
+import { Heading, Stack, Text } from '@chakra-ui/react'
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-
+import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 
 import { Layout } from '../layout/Layout'
 import { GET_PERSONAS} from '../api/players'
@@ -12,12 +12,25 @@ import { GET_PLANTS, GET_ADS, GET_CONSTRUCTIONS, GET_FARMS, GET_USERS } from '..
 //import { LIST_TEAMS } from '../api/teams'
 import {MessageText} from '../components/MessageBox/'
 import { MessageChatUser } from '../components/MensajeChatUser';
+import {Alerta} from '../components/Alerta'
 import { Input } from 'react-chat-elements'
 
 import {COMMENTS_SUBSCRIPTION } from '../api/subscriptions' // Define tu consulta de suscripción
 import { Button } from 'react-chat-elements'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react'
 
-
+import {
+  List,
+  ListItem,
+  ListIcon,
+  OrderedList,
+  UnorderedList,
+} from '@chakra-ui/react'
 
 function App() {
 
@@ -100,12 +113,102 @@ function App() {
       <Layout>
 
         <Heading align={'center'} size={'4xl'} m={30}>
-          💚Granja💚
+        🐑💚Granja💚🦆
         </Heading>
 
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
               <GridItem colSpan={1}>
-                <Box bg="blue.500" p={4} borderRadius="md">
+                <Box bg="green.100" p={4} borderRadius="md">
+
+                <Stack spacing='5'>
+                    <Card key='elevated' variant='elevated'>
+                      <CardHeader>
+                        <Heading size='md'> Granja del Usuario</Heading>
+                      </CardHeader>
+                      <CardBody>
+                        <Text>
+                        {dataE  ? (
+                          <ul>
+                            {dataE.farms.map((farm) => (
+                              <li key={farm.id}>
+                                <p>ID: {farm.id}</p>
+                                <p>Tamaño actual: {farm.currentSize}</p>
+                                <p>Tamaño máximo: {farm.maxSize}</p>
+                                <p>Siguiente nivel: {farm.nextTier}</p>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No se encontraron granjas para este usuario.</p>
+                        )}
+
+                        </Text>
+                      </CardBody>
+                    </Card>
+
+                    <Card key='elevated' variant='elevated'>
+                      <CardHeader>
+                        <Heading size='md'> Construcciones del usuario</Heading>
+                      </CardHeader>
+                      <CardBody>
+                        <Text>
+
+                        {dataE  ? (
+                          <ul>
+                            {dataE.farms.map((farm) => (
+                              <li key={farm.id}>
+                                <p>ID: {farm.id}</p>
+                                <p>Tamaño actual: {farm.currentSize}</p>
+                                <p>Tamaño máximo: {farm.maxSize}</p>
+                                <p>Siguiente nivel: {farm.nextTier}</p>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No se encontraron granjas para este usuario.</p>
+                        )}
+
+
+
+
+{personas.map((persona, index) => (
+                    <Alerta key={index}>{persona}</Alerta>
+                  ))}
+                        </Text>
+                      </CardBody>
+                    </Card>
+
+                    <Card key='elevated' variant='elevated'>
+                      <CardHeader>
+                        <Heading size='md'> Plantas del usuario</Heading>
+                      </CardHeader>
+                      <CardBody>
+                        <Text>hfgd</Text>
+                      </CardBody>
+                    </Card>
+
+                    <Card key='elevated' variant='elevated'>
+                      <CardHeader>
+                        <Heading size='md'> Clima para el usuario</Heading>
+                      </CardHeader>
+                      <CardBody>
+                        <Text>hfgd</Text>
+                      </CardBody>
+                    </Card>
+
+                    <Card>
+                    <CardBody>
+                      <Text>Anuncios</Text>
+                    </CardBody>
+                  </Card>
+                  
+                </Stack>
+
+
+                
+
+
+
                   <div>
                     {dataE  ? (
                     <ul>

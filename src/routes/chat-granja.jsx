@@ -171,9 +171,7 @@ function App() {
 
 
 
-                  {publicidades.map((publicidad, index) => (
-                    <Alerta key={index}>{publicidad}</Alerta>
-                  ))}
+                  
                         </Text>
                       </CardBody>
                     </Card>
@@ -199,9 +197,11 @@ function App() {
                     <Card>
                     <CardBody>
                       <Text>
+                        <div>
                       {publicidades.map((publicidad, index) => (
-                     key={index}>{publicidad}
-                    ))}
+                      key={index} > {publicidad}
+                  ))}
+                  </div>
                       </Text>
                     </CardBody>
                   </Card>

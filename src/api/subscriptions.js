@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const AD_SUBSCRIPTION = gql`
   subscription NewAd {
-    AdAdded {
+    adAdded {
       name
       description
     }

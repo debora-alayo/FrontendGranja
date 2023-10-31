@@ -8,7 +8,7 @@ import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 
 import { Layout } from '../layout/Layout'
 import { GET_PERSONAS} from '../api/players'
-import { GET_PLANTS, GET_ADS, GET_CONSTRUCTIONS, GET_FARMS, GET_USERS } from '../api/players';
+import { GET_PLANTS, GET_ADS, GET_CONSTRUCTIONS, GET_FARMS, GET_USERS , GET_WEATHER} from '../api/players';
 //import { LIST_TEAMS } from '../api/teams'
 import {MessageText} from '../components/MessageBox/'
 import { MessageChatUser } from '../components/MensajeChatUser';
@@ -18,20 +18,9 @@ import { Input } from 'react-chat-elements'
 
 import {AD_SUBSCRIPTION } from '../api/subscriptions' // Define tu consulta de suscripción
 import { Button } from 'react-chat-elements'
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-} from '@chakra-ui/react'
 
-import {
-  List,
-  ListItem,
-  ListIcon,
-  OrderedList,
-  UnorderedList,
-} from '@chakra-ui/react'
+
+
 
 function App() {
 
@@ -46,7 +35,14 @@ function App() {
     },
   });
 
-  console.log(dataE);
+  //console.log(dataE);
+
+  const { loading: loadingC, error: errorC, data: dataC } = useQuery(GET_WEATHER, {
+    variables: {
+      city: "Arica", // Reemplaza 1 con el valor del ID del usuario que deseas filtrar
+    },
+  });
+  console.log("CLIMA ",dataC);
 
   //if ( error) return <Layout> <Error /> </Layout>;
   //if (loading) return <Layout> <Loading /> </Layout>;
@@ -58,7 +54,7 @@ function App() {
       onData: (subscriptionData ) => {
         if (subscriptionData.data) {
           console.log(subscriptionData);
-          const newAd = subscriptionData.data.data.AdAdded;
+          const newAd = subscriptionData.data.data.adAdded;
           console.log(newAd);
           setPublicidades( publicidades => [...publicidades, newAd]);
         }
@@ -88,7 +84,7 @@ function App() {
   };
 
 
-
+  //addConstruction(farmId: ID!, plantId: ID!, isBuilt: Boolean!, posX: Int!, posY: Int!, daysTillDone: Int!, isWatered: Boolean!): Construction
   const sendMessage = () => {
     if (inputValue) {
       // Agrega el mensaje del usuario al estado local
@@ -122,54 +118,33 @@ function App() {
                 <Box bg="green.100" p={4} borderRadius="md">
 
                 <Stack spacing='5'>
-                    <Card key='elevated' variant='elevated'>
+                    <Card  variant='elevated'>
                       <CardHeader>
                         <Heading size='md'> Granja del Usuario</Heading>
                       </CardHeader>
                       <CardBody>
                         <Text>
-                        {dataE  ? (
+
+                        {dataE && dataE.getFarm ?  (
+                          console.log(dataE.getFarm),
                           <ul>
-                            {dataE.farms.map((farm) => (
-                              <li key={farm.id}>
-                                <p>ID: {farm.id}</p>
-                                <p>Tamaño actual: {farm.currentSize}</p>
-                                <p>Tamaño máximo: {farm.maxSize}</p>
-                                <p>Siguiente nivel: {farm.nextTier}</p>
-                              </li>
-                            ))}
+                            <p>Tamaño actual: {dataE.getFarm.currentSize}</p><p>Tamaño máximo: {dataE.getFarm.maxSize}</p><p>⏩ Siguiente nivel: {dataE.getFarm.nextTier}</p>
                           </ul>
                         ) : (
                           <p>No se encontraron granjas para este usuario.</p>
                         )}
+                      
 
                         </Text>
                       </CardBody>
                     </Card>
 
-                    <Card key='elevated' variant='elevated'>
+                    <Card  variant='elevated'>
                       <CardHeader>
-                        <Heading size='md'> Construcciones del usuario</Heading>
+                        <Heading size='md'>🔨🪓 Construcciones del usuario 🧰 </Heading>
                       </CardHeader>
                       <CardBody>
                         <Text>
-
-                        {dataE  ? (
-                          <ul>
-                            {dataE.farms.map((farm) => (
-                              <li key={farm.id}>
-                                <p>ID: {farm.id}</p>
-                                <p>Tamaño actual: {farm.currentSize}</p>
-                                <p>Tamaño máximo: {farm.maxSize}</p>
-                                <p>Siguiente nivel: {farm.nextTier}</p>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p>No se encontraron granjas para este usuario.</p>
-                        )}
-
-
 
 
                   
@@ -177,21 +152,27 @@ function App() {
                       </CardBody>
                     </Card>
 
-                    <Card key='elevated' variant='elevated'>
+                    <Card  variant='elevated'>
                       <CardHeader>
-                        <Heading size='md'> Plantas del usuario</Heading>
+                        <Heading size='md'> 🌱 Plantas del usuario</Heading>
                       </CardHeader>
                       <CardBody>
-                        <Text>hfgd</Text>
+                        <Text>***</Text>
                       </CardBody>
                     </Card>
 
-                    <Card key='elevated' variant='elevated'>
+                    <Card  variant='elevated'>
                       <CardHeader>
-                        <Heading size='md'> Clima para el usuario</Heading>
+                        <Heading size='md'> ☀️ Clima para el usuario</Heading>
                       </CardHeader>
                       <CardBody>
-                        <Text>hfgd</Text>
+                        <Text>
+                          {dataC && dataC.getWeather ?  (
+                          <><p>🌡️ Temperatura del día: {dataC.getWeather.temperatura} [°C]</p><p> 💧 Mililitros de agua del día: {dataC.getWeather.precipitacion}</p></>
+                        ) : (
+                          <p>No hay clima para el usuario.</p>
+                        )}
+                        </Text>
                       </CardBody>
                     </Card>
 
@@ -206,30 +187,7 @@ function App() {
                   </Card>
                   
                 </Stack>
-
-
-                
-
-
-
-                  <div>
-                    {dataE  ? (
-                    <ul>
-                      {dataE.farms.map((farm) => (
-                        <li key={farm.id}>
-                          <p>ID: {farm.id}</p>
-                          <p>Tamaño actual: {farm.currentSize}</p>
-                          <p>Tamaño máximo: {farm.maxSize}</p>
-                          <p>Siguiente nivel: {farm.nextTier}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No se encontraron granjas para este usuario.</p>
-                  )}
-
-                  </div>
-
+              
                 
 
                 </Box>

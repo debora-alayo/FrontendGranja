@@ -31,23 +31,10 @@ export const GET_PERSONAS = gql`
 
 export const GET_FARMS = gql`
   query GetFarms($userId: ID!) {
-    farms(userId: $userId) {
-      id
+    getFarm(userId: $userId) {
       currentSize
       maxSize
       nextTier
-      constructions {
-        id
-        plant {
-          id
-          name
-        }
-        isBuilt
-        posX
-        posY
-        daysTillDone
-        isWatered
-      }
       
     }
   }
@@ -93,4 +80,16 @@ export const GET_ADS = gql`
     }
   }
 `;
+
+
+export const GET_WEATHER = gql`
+  query GetWeather($city: String!) {
+    getWeather(city: $city)
+    {
+      temperatura
+      precipitacion
+    }
+  }
+  `;
+
 

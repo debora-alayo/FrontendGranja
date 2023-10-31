@@ -5,7 +5,7 @@ import { MessageBox } from 'react-chat-elements';
 
 export const MessageChatUser = ({ children }) => {
     const { user,text } = children[0];
-    console.log(children);
+    //console.log(children);
 
   
     return (

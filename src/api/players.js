@@ -92,4 +92,13 @@ export const GET_WEATHER = gql`
   }
   `;
 
+  export const ADD_PLANT = gql`
+  mutation AddPlant($userId: ID!, $plantName: String!, $posX: Int!, $posY: Int!) {
+    addPlant(userId: $userId, plantName: $plantName, posX: $posX, posY: $posY) {
+      plantName
+      
+    }
+  }
+  `;
+
 

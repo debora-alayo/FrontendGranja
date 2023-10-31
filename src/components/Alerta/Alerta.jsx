@@ -7,7 +7,8 @@ import {
 
   
 export const Alerta = ({ children }) => {
-    const { edad } = children;
+  const { name, posx, posy} = children[1];
+
     console.log(children);
 
   
@@ -17,7 +18,7 @@ export const Alerta = ({ children }) => {
 
         <Alert status='success'>
             <AlertIcon />
-            {edad}
+            Se ha añadido la planta {posx}
         </Alert>
         </div>
 

@@ -10,3 +10,19 @@ export const AD_SUBSCRIPTION = gql`
 
 `;
 
+export const PLANT_SUBSCRIPTION = gql`
+  subscription NewPlant {
+    plantAdded {
+      name
+      daysToGrow
+      lifeExpectancy
+      minHarvest
+      maxHarvest
+      description
+    }
+  }
+
+`;
+
+
+

@@ -1,12 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MessagesGranja from "./routes/chat-granja";
-//import {Comandos} from "./routes/comandos";
-
 
 
 
 let router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MessagesGranja />,
+  },
   {
     path: "/chat-granja",
     element: <MessagesGranja />,

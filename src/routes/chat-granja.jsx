@@ -1,32 +1,21 @@
 import React, {useState , useRef} from 'react';
-import { useQuery,  useApolloClient, useMutation } from '@apollo/client'
-import { useSubscription } from '@apollo/client'
-//import { useForm } from 'react-hook-form';
-
-
-import { Heading, Stack, Text, useToast } from '@chakra-ui/react'
+import { useQuery, useMutation, useSubscription } from '@apollo/client'
+import { Heading, Stack, Text } from '@chakra-ui/react'
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody} from '@chakra-ui/react'
 
 import { Layout } from '../layout/Layout'
-import { GET_PERSONAS} from '../api/players'
-import { GET_PLANTS, GET_ADS, GET_CONSTRUCTIONS, GET_FARMS, GET_USERS , GET_WEATHER, ADD_PLANT} from '../api/players';
-import {MessageText} from '../components/MessageBox/'
+import { GET_FARMS,  GET_WEATHER, ADD_PLANT} from '../api/players';
 import { MessageChatUser } from '../components/MensajeChatUser';
 import { CardPublicidadUser } from '../components/CardPublicidad';
 import {Alerta} from '../components/Alerta'
 import { Input } from 'react-chat-elements'
-
 import { Button } from 'react-chat-elements'
-
 import {AD_SUBSCRIPTION, PLANT_SUBSCRIPTION } from '../api/subscriptions'
 
 
 
-
 function App() {
-
-
 
   //INFO GRANJA DEL USUARIO
   const { loading: loadingE, error: errorE, data: dataE } = useQuery(GET_FARMS, {
@@ -40,8 +29,6 @@ function App() {
   }
 
 
-  //console.log(dataE);
-
   //INFO CLIMA DEL USUARIO
 
   const { loading: loadingC, error: errorC, data: dataC } = useQuery(GET_WEATHER, {
@@ -49,10 +36,12 @@ function App() {
       city: "Arica", // Reemplaza 1 con el valor del ID del usuario que deseas filtrar
     },
   });
-  //console.log("CLIMA ",dataC);
 
-  //if ( error) return <Layout> <Error /> </Layout>;
-  //if (loading) return <Layout> <Loading /> </Layout>;
+  if (errorC) {
+    console.error("Error", errorC);
+  }
+
+
 
   //SUBSCRIPCION DE PUBLICIDAD
 
@@ -102,11 +91,9 @@ function App() {
       },
     })
       .then((result) => {
-        // La mutación se realizó con éxito, result contiene la respuesta
         console.log('Mutación exitosa:', result);
       })
       .catch((error) => {
-        // Ocurrió un error durante la mutación
         console.error('Error en la mutación:', error);
       });
   }; 
@@ -146,136 +133,130 @@ function App() {
   };
   }
 
+  // Estilos para la lista
+  const listStyle = {
+    listStyle: "none", // Puedes personalizar el tipo de punto
+    paddingLeft: "0px",    // Ajusta la sangría
+  };
+  const listItemStyle = {
+    background: `url('bullet.png') left center no-repeat`, // Usa tu imagen como marcador de lista
+    paddingLeft: "0px",  // Ajusta la posición del texto
+  };   
 
-    return (
-      <Layout>
 
-        <Heading align={'center'} size={'4xl'} m={30}>
-        🐑💚Granja💚🦆
-        </Heading>
+  return (
+    <Layout>
 
-        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-              <GridItem colSpan={1}>
-                <Box bg="green.100" p={4} borderRadius="md">
+      <Heading align={'center'} size={'4xl'} m={30}>
+      🐑💚Granja💚🦆
+      </Heading>
 
-                <Stack spacing='5'>
-                    <Card  variant='elevated'>
-                      <CardHeader>
-                        <Heading size='md'> Granja del Usuario</Heading>
-                      </CardHeader>
-                      <CardBody>
-                        <Text>
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        <GridItem colSpan={1}>
+          <Box bg="green.100" p={4} borderRadius="md">
 
-                        {dataE && dataE.getFarm ?  (
-                          //console.log(dataE.getFarm),
-                          <ul>
-                            <p>Tamaño actual: {dataE.getFarm.currentSize}</p><p>Tamaño máximo: {dataE.getFarm.maxSize}</p><p>⏩ Siguiente nivel: {dataE.getFarm.nextTier}</p>
-                          </ul>
-                        ) : (
-                          <p>No se encontraron granjas para este usuario.</p>
-                        )}
-                      
+            <Stack spacing='5'>
+              <Card  variant='elevated'>
+                <CardHeader>
+                  <Heading size='md'> Granja del Usuario</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>
+                    {dataE && dataE.getFarm ?  (
+                      //console.log(dataE.getFarm),
+                      <ul style={listStyle}>
+                        <li style={listItemStyle}>Tamaño actual: {dataE.getFarm.currentSize}</li>
+                        <li style={listItemStyle}>Tamaño máximo: {dataE.getFarm.maxSize}</li>
+                        <li style={listItemStyle}>⏩ Siguiente nivel: {dataE.getFarm.nextTier}</li>
+                      </ul>
+                    ) : (
+                      <p>No se encontraron granjas para este usuario.</p>
+                    )}                
+                  </Text>
+                </CardBody>
+              </Card>
 
-                        </Text>
-                      </CardBody>
-                    </Card>
+              <Card  variant='elevated'>
+                <CardHeader>
+                  <Heading size='md'>🔨🪓 Construcciones del usuario 🧰 </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>***</Text>
+                </CardBody>
+              </Card>
 
-                    <Card  variant='elevated'>
-                      <CardHeader>
-                        <Heading size='md'>🔨🪓 Construcciones del usuario 🧰 </Heading>
-                      </CardHeader>
-                      <CardBody>
-                        <Text>***                  
-                        </Text>
-                      </CardBody>
-                    </Card>
+              <Card  variant='elevated'>
+                <CardHeader>
+                  <Heading size='md'> 🌱 Plantas del usuario</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>***
+                    {plantas.length > 0 ? (
+                      plantas.map((planta, index) => (
+                        <Alerta key={index}>{planta}</Alerta>
+                      ))
+                    ) : (
+                      <p>No hay datos de plantas disponibles.</p>
+                    )}
+                  </Text>
+                </CardBody>
+              </Card>
 
-                    <Card  variant='elevated'>
-                      <CardHeader>
-                        <Heading size='md'> 🌱 Plantas del usuario</Heading>
-                      </CardHeader>
-                      <CardBody>
-                        <Text>***
+              <Card  variant='elevated'>
+                <CardHeader>
+                  <Heading size='md'> ☀️ Clima para el usuario</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>
+                    {dataC && dataC.getWeather ?  (
+                    <><p>🌡️ Temperatura del día: {dataC.getWeather.temperatura} [°C]</p><p> 💧 Mililitros de agua del día: {dataC.getWeather.precipitacion}</p></>
+                    ) : (
+                    <p>No hay clima para el usuario.</p>
+                    )}
+                  </Text>
+                </CardBody>
+              </Card>
 
-                        {plantas.length > 0 ? (
-                          plantas.map((planta, index) => (
-                            <Alerta key={index}>{planta}</Alerta>
-                          ))
-                        ) : (
-                          <p>No hay datos de plantas disponibles.</p>
-                        )}
-                        </Text>
-                      </CardBody>
-                    </Card>
-
-                    <Card  variant='elevated'>
-                      <CardHeader>
-                        <Heading size='md'> ☀️ Clima para el usuario</Heading>
-                      </CardHeader>
-                      <CardBody>
-                        <Text>
-                          {dataC && dataC.getWeather ?  (
-                          <><p>🌡️ Temperatura del día: {dataC.getWeather.temperatura} [°C]</p><p> 💧 Mililitros de agua del día: {dataC.getWeather.precipitacion}</p></>
-                        ) : (
-                          <p>No hay clima para el usuario.</p>
-                        )}
-                        </Text>
-                      </CardBody>
-                    </Card>
-
-                    <Card>
-                    <CardBody>
-                                            
-                      {publicidades.map((publicidad, index) => (
-                       <CardPublicidadUser  key={index} > {publicidad}</CardPublicidadUser>
-                      ))}
-                    
-                    </CardBody>
-                  </Card>
-                  
-                </Stack>
+              <Card>
+                <CardBody>                                          
+                  {publicidades.map((publicidad, index) => (
+                    <CardPublicidadUser  key={index} > {publicidad}</CardPublicidadUser>
+                  ))}                  
+                </CardBody>
+              </Card>
               
-                
+            </Stack>           
 
-                </Box>
-              </GridItem>
-              <GridItem colSpan={1}>
-                <Box bg="green.500" p={4} borderRadius="md">
+          </Box>
+        </GridItem>
 
-                {messages.map((message, index) => (
-                  <MessageChatUser key={index}>{message} </MessageChatUser>
-                ))}
+        <GridItem colSpan={1}>
+          <Box bg="green.500" p={4} borderRadius="md">
 
-
-                
-                  
-                <Input
-                    reference={inputReference}
-                    placeholder='Escribe tu comando aquí'
-                    multiline={true}
-                    value={inputValue}
-                    rightButtons={
-                    <Button 
-                    color='white' 
-                    backgroundColor='black' text='Send'  onClick={sendMessage}/>
-                    }
-                    onChange={handleInputChange}
-                  />
-                
-                </Box>
-              </GridItem>
-          </Grid>
-
-
-
-        
-
-        
-      </Layout>
-
-
+            {messages.map((message, index) => (
+              <MessageChatUser key={index}>{message} </MessageChatUser>
+            ))}        
+            
+            <Input
+              reference={inputReference}
+              placeholder='Escribe tu comando aquí'
+              multiline={true}
+              value={inputValue}
+              rightButtons={
+              <Button 
+              color='white' 
+              backgroundColor='black' text='Send'  onClick={sendMessage}/>
+              }
+              onChange={handleInputChange}
+            />
+          
+          </Box>
+        </GridItem>
+      </Grid>     
       
-    );
+    </Layout>
+    
+  );
    
 }
 

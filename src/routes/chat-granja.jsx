@@ -5,7 +5,7 @@ import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { Card, CardHeader, CardBody} from '@chakra-ui/react'
 
 import { Layout } from '../layout/Layout'
-import { GET_FARMS,  GET_WEATHER, ADD_PLANT} from '../api/players';
+import { GET_FARMS,  GET_WEATHER, ADD_PLANT, GET_CONSTRUCTIONS} from '../api/players';
 import { MessageChatUser } from '../components/MensajeChatUser';
 import { CardPublicidadUser } from '../components/CardPublicidad';
 import {Alerta} from '../components/Alerta'
@@ -27,6 +27,12 @@ function App() {
   if (errorE) {
     console.error("Error", errorE);
   }
+
+  const { loading: loadingT, error: errorT, data: dataT } = useQuery(GET_CONSTRUCTIONS, {
+    variables: {
+      userId: 1, // Reemplaza 1 con el valor del ID del usuario
+    },
+  });
 
 
   //INFO CLIMA DEL USUARIO
@@ -63,20 +69,20 @@ function App() {
 
   //SUBSCRIPCION DE PLANTAS
 
-  const [plantas, setPlantas] = useState([]);
+  // const [plantas, setPlantas] = useState([]);
 
-  const { loading: loadingP, error: errorP, data: dataP } = useSubscription(
-    PLANT_SUBSCRIPTION,{
-      onData: (subscriptionData ) => {
-        if (subscriptionData.data) {
-          console.log("PLANTAS",subscriptionData);
-          const newPlant = subscriptionData.data.data.plantAdded;
-          console.log("NUEVA PLANTA",newPlant);
-          setPlantas( plantas => [...plantas, newPlant]);
-        }
-      }
-    }
-  );
+  // const { loading: loadingP, error: errorP, data: dataP } = useSubscription(
+  //   PLANT_SUBSCRIPTION,{
+  //     onData: (subscriptionData ) => {
+  //       if (subscriptionData.data) {
+  //         console.log("PLANTAS",subscriptionData);
+  //         const newPlant = subscriptionData.data.data.plantAdded;
+  //         console.log("NUEVA PLANTA",newPlant);
+  //         setPlantas( plantas => [...plantas, newPlant]);
+  //       }
+  //     }
+  //   }
+  // );
 
 
   const [addPlant, { loading: loadingAP }] = useMutation(ADD_PLANT);
@@ -181,7 +187,18 @@ function App() {
                   <Heading size='md'>🔨🪓 Construcciones del usuario 🧰 </Heading>
                 </CardHeader>
                 <CardBody>
-                  <Text>***</Text>
+                  <Text>{
+                    dataT && dataT.getConstructions ?  (
+                      //console.log(dataT.getConstructions),
+                      <ul style={listStyle}>
+                        {dataT.getConstructions.map((construction, index) => (
+                          <li style={listItemStyle} key={index}>{construction.isBuilt}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No hay construcciones para el usuario.</p>
+                    )}
+                  </Text>
                 </CardBody>
               </Card>
 
@@ -191,13 +208,13 @@ function App() {
                 </CardHeader>
                 <CardBody>
                   <Text>***
-                    {plantas.length > 0 ? (
+                    {/* {plantas.length > 0 ? (
                       plantas.map((planta, index) => (
                         <Alerta key={index}>{planta}</Alerta>
                       ))
                     ) : (
                       <p>No hay datos de plantas disponibles.</p>
-                    )}
+                    )} */}
                   </Text>
                 </CardBody>
               </Card>
@@ -218,6 +235,9 @@ function App() {
               </Card>
 
               <Card>
+                <CardHeader>
+                  <Heading size='md'> 📢  Anuncios</Heading>
+                </CardHeader>
                 <CardBody>                                          
                   {publicidades.map((publicidad, index) => (
                     <CardPublicidadUser  key={index} > {publicidad}</CardPublicidadUser>

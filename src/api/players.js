@@ -41,19 +41,14 @@ export const GET_FARMS = gql`
   `;
 
 export const GET_CONSTRUCTIONS = gql`
-  query {
-    constructions {
-      id
-      farm {
-        id
-      }
-      plant {
-        id
-        name
-      }
+  query GetConstructions($userId: ID!){
+    getConstructions(
+      userId: $userId
+    ){
       isBuilt
       posX
       posY
+      hasPlant
       daysTillDone
       isWatered
     }

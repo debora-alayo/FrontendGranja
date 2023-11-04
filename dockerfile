@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Copia la carpeta node_modules desde tu proyecto local al contenedor
+COPY node_modules ./node_modules
+
 # Copy the rest of the application code to the container
 COPY . .
 

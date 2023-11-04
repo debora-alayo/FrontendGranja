@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:14-alpine
+FROM node:latest
 
 # Set the working directory to /app
 WORKDIR /app
@@ -9,9 +9,6 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
-
-# Copia la carpeta node_modules desde tu proyecto local al contenedor
-COPY node_modules ./node_modules
 
 # Copy the rest of the application code to the container
 COPY . .

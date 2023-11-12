@@ -16,7 +16,7 @@ import { createClient } from 'graphql-ws';
 
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:4000/graphql',
+  url: 'ws://api-gateway-clima:4000/graphql',
   PushSubscriptionOptions: {
     reconnect: true,
     timeout: 20000,
@@ -25,7 +25,7 @@ const wsLink = new GraphQLWsLink(createClient({
 }));
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: "http://api-gateway-clima:4000/graphql",
   
 });
 

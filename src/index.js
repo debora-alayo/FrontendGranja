@@ -15,14 +15,14 @@ import { createClient } from 'graphql-ws';
 
 
 
-const wsLink = new GraphQLWsLink(createClient({
-  url: 'wss://apigatewayclima.demo.inf326.nursoft.dev/graphql',
-  PushSubscriptionOptions: {
+const wsLink = new GraphQLWsLink({
+  uri: 'wss://apigatewayclima.demo.inf326.nursoft.dev/graphql',
+  options: {
     reconnect: true,
     timeout: 20000,
   },
- 
-}));
+});
+
 
 const httpLink = new HttpLink({
   uri: "https://apigatewayclima.demo.inf326.nursoft.dev/graphql",

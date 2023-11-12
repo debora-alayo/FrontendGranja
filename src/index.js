@@ -25,7 +25,7 @@ const wsLink = new GraphQLWsLink({
 
 
 const httpLink = new HttpLink({
-  uri: "https://apigatewayclima.demo.inf326.nursoft.dev/graphql",
+  uri: "https://apigatewayclima.demo.inf326.nursoft.dev/graphql/",
   
 });
 
